@@ -1131,7 +1131,15 @@
             const contact = document.getElementById('client-contact').value.trim();
             const service = document.getElementById('client-service').value;
             const time = document.getElementById('client-time').value;
-            const comment = document.getElementById('client-comment').value.trim();
+          // Автоматично зчитуємо UTM-мітки з адресного рядка
+const urlParams = new URLSearchParams(window.location.search);
+const utmSource = urlParams.get('utm_source') || 'direct';
+const utmMedium = urlParams.get('utm_medium') || 'none';
+const utmCampaign = urlParams.get('utm_campaign') || 'none';
+
+// Додаємо мітки до коментаря заявки
+const userComment = document.getElementById('client-comment').value.trim();
+const comment = `${userComment} [UTM: source=${utmSource}, medium=${utmMedium}, campaign=${utmCampaign}]`;
 
             const submitBtn = document.getElementById('submit-booking-btn');
             submitBtn.disabled = true;
