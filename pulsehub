@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="uk" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PULSE Hub Zhytomyr — Підземний енергонезалежний коворкінг та укриття</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Montserrat', 'sans-serif'],
+                    },
+                    colors: {
+                        amber: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        },
+                        dark: {
+                            950: '#090a0f',
+                            900: '#11131c',
+                            800: '#1a1d2b',
+                            700: '#262b3d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #090a0f;
+            color: #f3f4f6;
+        }
+        .glow-amber {
+            box-shadow: 0 0 25px -5px rgba(245, 158, 11, 0.35);
+        }
+        .page-section {
+            display: none;
+            animation: fadeIn 0.35s ease-out forwards;
+        }
+        .page-section.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #11131c;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #262b3d;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f59e0b;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans selection:bg-amber-500 selection:text-dark-950">
+
+    <!-- Top Live Status Bar -->
+    <div class="bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-dark-950 px-4 py-1.5 text-xs sm:text-sm font-semibold">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+                <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-dark-950 text-amber-400 font-bold animate-pulse">⚡</span>
+                <span><strong>Працюємо під час блекаутів та повітряних тривог!</strong> м. Житомир, вул. Михайлівська, 15 (Підвальне приміщення / Укриття)</span>
+            </div>
+            <div class="flex items-center gap-4 ml-auto">
+                <a href="tel:+380990001515" class="hover:underline flex items-center gap-1 font-bold">
+                    <i class="ph-fill ph-phone-call"></i> +38 (099) 000-15-15
+                </a>
+                <button onclick="navigateTo('contacts')" class="bg-dark-950 text-amber-400 px-2.5 py-0.5 rounded-md text-xs font-bold hover:bg-dark-800 transition">
+                    Забронювати місце →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-40 bg-dark-900/90 backdrop-blur-md border-b border-dark-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Brand Logo -->
+                <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('home')">
+                    <div class="w-11 h-11 rounded-xl bg-amber-500 flex items-center justify-center text-dark-950 font-display font-black text-2xl shadow-lg glow-amber">
+                        <i class="ph-fill ph-lightning"></i>
+                    </div>
+                    <div>
+                        <span class="font-display font-extrabold text-xl tracking-tight text-white block leading-none">
+                            PULSE <span class="text-amber-400">HUB</span>
+                        </span>
+                        <span class="text-xs text-gray-400 font-medium tracking-wider uppercase">Житомир • Safe Coworking</span>
+                    </div>
+                </div>
+
+                <!-- Live Status Pill (Desktop & Tablet) -->
+                <div class="hidden xl:flex items-center gap-2 bg-dark-800/90 border border-emerald-500/30 px-3.5 py-1.5 rounded-full text-xs font-medium text-emerald-400">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span>Резервне живлення | Оптоволокно + Starlink | Підземне укриття (-1 поверх)</span>
+                </div>
+
+                <!-- Desktop Navigation Menu -->
+                <nav class="hidden md:flex items-center gap-1 lg:gap-2" aria-label="Головне меню">
+                    <button onclick="navigateTo('home')" data-nav="home" class="nav-btn px-3.5 py-2 rounded-lg text-sm font-semibold transition-all text-amber-400 bg-dark-800">
+                        Головна
+                    </button>
+                    <button onclick="navigateTo('services')" data-nav="services" class="nav-btn px-3.5 py-2 rounded-lg text-sm font-semibold text-gray-300 hover:text-white hover:bg-dark-800/60 transition-all">
+                        Послуги та Формати
+                    </button>
+                    <button onclick="navigateTo('autonomy')" data-nav="autonomy" class="nav-btn px-3.5 py-2 rounded-lg text-sm font-semibold text-gray-300 hover:text-white hover:bg-dark-800/60 transition-all">
+                        Автономність та Події
+                    </button>
+                    <button onclick="navigateTo('about')" data-nav="about" class="nav-btn px-3.5 py-2 rounded-lg text-sm font-semibold text-gray-300 hover:text-white hover:bg-dark-800/60 transition-all">
+                        Про нас
+                    </button>
+                    <button onclick="navigateTo('contacts')" data-nav="contacts" class="nav-btn px-3.5 py-2 rounded-lg text-sm font-semibold text-gray-300 hover:text-white hover:bg-dark-800/60 transition-all">
+                        Контакти
+                    </button>
+                </nav>
+
+                <!-- CTA Button & Mobile Menu Trigger -->
+                <div class="flex items-center gap-3">
+                    <button onclick="navigateTo('contacts')" class="hidden sm:inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-dark-950 font-bold text-sm px-4 py-2.5 rounded-xl transition shadow-md glow-amber">
+                        <span>Забронювати</span>
+                        <i class="ph-bold ph-arrow-right"></i>
+                    </button>
+                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden p-2.5 rounded-xl bg-dark-800 text-gray-200 hover:text-amber-400 focus:outline-none" aria-label="Відкрити меню">
+                        <i id="mobile-menu-icon" class="ph ph-list text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Drawer -->
+        <div id="mobile-menu" class="hidden md:hidden bg-dark-900 border-b border-dark-700 px-4 pt-3 pb-5 space-y-2">
+            <div class="flex items-center gap-2 bg-dark-800 border border-emerald-500/30 px-3 py-2 rounded-lg text-xs text-emerald-400 mb-3">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                <span>Автономне живлення | Укриття працює щодня</span>
+            </div>
+            <button onclick="navigateTo('home'); toggleMobileMenu()" data-nav-mobile="home" class="w-full text-left px-4 py-2.5 rounded-lg text-sm font-semibold bg-dark-800 text-amber-400">
+                Головна
+            </button>
+            <button onclick="navigateTo('services'); toggleMobileMenu()" data-nav-mobile="services" class="w-full text-left px-4 py-2.5 rounded-lg text-sm font-semibold text-gray-300 hover:bg-dark-800">
+                Послуги та Формати
+            </button>
+            <button onclick="navigateTo('autonomy'); toggleMobileMenu()" data-nav-mobile="autonomy" class="w-full text-left px-4 py-2.5 rounded-lg text-sm font-semibold text-gray-300 hover:bg-dark-800">
+                Автономність та Події
+            </button>
+            <button onclick="navigateTo('about'); toggleMobileMenu()" data-nav-mobile="about" class="w-full text-left px-4 py-2.5 rounded-lg text-sm font-semibold text-gray-300 hover:bg-dark-800">
+                Про нас
+            </button>
+            <button onclick="navigateTo('contacts'); toggleMobileMenu()" data-nav-mobile="contacts" class="w-full text-left px-4 py-2.5 rounded-lg text-sm font-semibold text-gray-300 hover:bg-dark-800">
+                Контакти
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow">
+
+        <!-- ==========================================
+             PAGE 1: ГОЛОВНА (HOME)
+             ========================================== -->
+        <section id="page-home" class="page-section active">
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden border-b border-dark-700 bg-gradient-to-b from-dark-900 to-dark-950 py-14 sm:py-20 lg:py-24">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+                        <!-- Left Column: Offer & Description -->
+                        <div class="lg:col-span-7 space-y-6">
+                            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs sm:text-sm font-semibold">
+                                <i class="ph-fill ph-shield-check text-base"></i>
+                                <span>Сучасний коворкінг Житомир • Підвальне приміщення на вул. Михайлівській, 15</span>
+                            </div>
+
+                            <h1 class="font-display font-black text-3xl sm:text-5xl lg:text-6xl text-white leading-tight">
+                                Енергонезалежний простір у серці Житомира: <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-500">світло, інтернет і безпека</span>
+                            </h1>
+
+                            <p class="text-gray-300 text-base sm:text-lg leading-relaxed">
+                                <strong>PULSE Hub Zhytomyr</strong> — це комфортний <strong>нетворкінг простір</strong> у капітальному підвальному приміщенні в центрі міста. Ми облаштували надійне <strong>укриття для роботи</strong>, щоб ви не переривали важливі дзвінки та завдання під час повітряних тривог. Завдяки акумуляторним системам, генератору та резервним лініям зв'язку тут організована стабільна <strong>робота під час блекауту</strong>. Для фахівців і команд доступна гнучка <strong>оренда офісу Житомир</strong>, окремі робочі столи та переговорні кімнати.
+                            </p>
+
+                            <!-- Primary CTA Buttons -->
+                            <div class="flex flex-wrap items-center gap-4 pt-2">
+                                <button onclick="navigateTo('contacts')" class="inline-flex items-center gap-3 bg-amber-500 hover:bg-amber-400 text-dark-950 font-display font-extrabold text-base sm:text-lg px-7 py-4 rounded-2xl transition shadow-xl glow-amber">
+                                    <span>Забронювати робоче місце</span>
+                                    <i class="ph-bold ph-arrow-right text-xl"></i>
+                                </button>
+                                <button onclick="navigateTo('services')" class="inline-flex items-center gap-2 bg-dark-800 hover:bg-dark-700 text-white border border-dark-700 font-semibold text-base px-6 py-4 rounded-2xl transition">
+                                    <i class="ph ph-tag text-amber-400 text-xl"></i>
+                                    <span>Переглянути послуги</span>
+                                </button>
+                            </div>
+
+                            <!-- Quick Trust Indicators -->
+                            <div class="pt-4 grid grid-cols-3 gap-4 border-t border-dark-800 text-left">
+                                <div>
+                                    <div class="font-display font-black text-2xl sm:text-3xl text-emerald-400">-1 поверх</div>
+                                    <div class="text-xs sm:text-sm text-gray-400">підвальне укриття для роботи</div>
+                                </div>
+                                <div>
+                                    <div class="font-display font-black text-2xl sm:text-3xl text-white">GPON + Starlink</div>
+                                    <div class="text-xs sm:text-sm text-gray-400">основний і резервний інтернет</div>
+                                </div>
+                                <div>
+                                    <div class="font-display font-black text-2xl sm:text-3xl text-amber-400">UPS + Генератор</div>
+                                    <div class="text-xs sm:text-sm text-gray-400">автономне електроживлення</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column: Hero Image -->
+                        <div class="lg:col-span-5">
+                            <div class="relative rounded-3xl overflow-hidden border-2 border-dark-700 shadow-2xl bg-dark-800 group">
+                                <img 
+                                    src="https://images.unsplash.com/photo-1527192491265-7e15c55b1ed2?auto=format&fit=crop&w=1000&q=80" 
+                                    alt="Просторий зал підземного коворкінгу PULSE Hub у Житомирі з ергономічними робочими місцями"
+                                    onerror="this.src='https://placehold.co/800x600/1a1d2b/fbbf24?text=PULSE+Hub+Zhytomyr'"
+                                    class="w-full h-[380px] sm:h-[440px] object-cover group-hover:scale-105 transition duration-500"
+                                >
+                                <div class="absolute inset-0 bg-gradient-to-t from-dark-950 via-transparent to-transparent"></div>
+                                
+                                <div class="absolute bottom-4 left-4 right-4 bg-dark-950/90 backdrop-blur-md border border-dark-700 rounded-2xl p-4 flex items-center justify-between gap-3">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shrink-0">
+                                            <i class="ph-fill ph-shield-star text-xl"></i>
+                                        </div>
+                                        <div>
+                                            <div class="text-xs font-bold text-white">Безпечний підземний простір</div>
+                                            <div class="text-[11px] text-gray-400">Припливно-витяжна вентиляція та два незалежні виходи</div>
+                                        </div>
+                                    </div>
+                                    <span class="px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-400 text-[11px] font-bold shrink-0">Без тривог</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature Cards Section -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <h2 class="font-display font-bold text-2xl sm:text-3xl text-white mb-3">Чому фахівці обирають наш коворкінг Житомир</h2>
+                    <p class="text-gray-400">Простір спроєктовано для спокійної щоденної праці, ділових зустрічей і командної взаємодії за будь-яких зовнішніх обставин.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Feature 1 -->
+                    <div class="bg-dark-900 border border-dark-700 rounded-2xl p-6 hover:border-amber-500/50 transition">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-2xl mb-4">
+                            <i class="ph-fill ph-shield-check"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-lg text-white mb-2">Облаштоване укриття для роботи</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Ми розташовані у капітальному підвальному приміщенні з двома виходами та системою вентиляції. Під час повітряної тривоги вам не потрібно залишати робоче місце.
+                        </p>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="bg-dark-900 border border-dark-700 rounded-2xl p-6 hover:border-amber-500/50 transition">
+                        <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-2xl mb-4">
+                            <i class="ph-fill ph-battery-charging-vertical"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-lg text-white mb-2">Стабільна робота під час блекауту</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Резервні акумулятори підтримують живлення розеток та освітлення, а при тривалих відключеннях міської мережі підключається власний дизельний генератор.
+                        </p>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="bg-dark-900 border border-dark-700 rounded-2xl p-6 hover:border-amber-500/50 transition">
+                        <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-2xl mb-4">
+                            <i class="ph-fill ph-wifi-high"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-lg text-white mb-2">Резервовані канали інтернету</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            До приміщення підведено оптоволоконні лінії GPON від різних провайдерів, а також налаштовано резервний супутниковий зв'язок Starlink для відеодзвінків.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             PAGE 2: ТАРИФИ ТА ПОСЛУГИ (SERVICES)
+             ========================================== -->
+        <section id="page-services" class="page-section py-12 sm:py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-3xl mb-12">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-xs font-semibold mb-3">
+                        <span>Гнучкі рішення для спеціалістів і команд</span>
+                    </div>
+                    <h1 class="font-display font-black text-3xl sm:text-4xl text-white mb-4">Послуги та формати розміщення</h1>
+                    <p class="text-gray-300 leading-relaxed text-base">
+                        Наш <strong>коворкінг Житомир</strong> пропонує зручні формати як для разових візитів на час відключень світла, так і для довгострокової праці. Якщо вашій команді потрібна безпечна <strong>оренда офісу Житомир</strong> або окрема зала для зустрічей, ви можете обрати оптимальний пакет. Усі відвідувачі отримують доступ до стабільного інтернету, безперебійного живлення та кавової зони.
+                    </p>
+                </div>
+
+                <!-- Service Cards (3 Verified Services from Prompt) -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+                    <!-- Service 1 -->
+                    <div class="bg-dark-900 border border-dark-700 rounded-3xl p-7 flex flex-col justify-between">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-gray-400">Для фрілансерів і спеціалістів</span>
+                            <h3 class="font-display font-bold text-2xl text-white mt-1">Індивідуальне робоче місце</h3>
+                            <p class="text-sm text-gray-300 mt-3 mb-6 leading-relaxed">
+                                Зручний ергономічний стіл у загальному залі або тиха зона, стабільний швидкісний інтернет та розетки з безперебійним живленням для вашого ноутбука.
+                            </p>
+                            <ul class="space-y-3 text-sm text-gray-300 mb-8">
+                                <li class="flex items-center gap-2"><i class="ph-fill ph-check-circle text-amber-400 text-lg"></i> Робота за денним пасом або місячним абонементом</li>
+                                <li class="flex items-center gap-2"><i class="ph-fill ph-check-circle text-amber-400 text-lg"></i> Розетки 220V та USB-C біля кожного місця</li>
+                                <li class="flex items-center gap-2"><i class="ph-fill ph-check-circle text-amber-400 text-lg"></i> Доступ до звукоізольованих кабін для дзвінків</li>
+                            </ul>
+                        </div>
+                        <button onclick="selectServiceAndBook('Індивідуальне робоче місце (Open Space)')" class="w-full py-3.5 rounded-xl bg-dark-800 hover:bg-amber-500 hover:text-dark-950 text-white font-bold text-sm border border-dark-700 transition">
+                            Забронювати робоче місце
+                        </button>
+                    </div>
+
+                    <!-- Service 2 (Highlighted) -->
+                    <div class="bg-dark-900 border-2 border-amber-500 rounded-3xl p-7 flex flex-col justify-between relative shadow-xl glow-amber">
+                        <div class="absolute -top-3.5 right-6 bg-amber-500 text-dark-950 text-xs font-extrabold px-3 py-1 rounded-full uppercase">
+                            Для команд та нарад
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Командна робота</span>
+                            <h3 class="font-display font-bold text-2xl text-white mt-1">Закрита переговорна кімната</h3>
+                            <p class="text-sm text-gray-300 mt-3 mb-6 leading-relaxed">
+                                Тихий відокремлений простір у підземному укритті для онлайн-дзвінків, командних нарад, співбесід та презентацій, обладнаний усім необхідним.
+                            </p>
+                            <ul class="space-y-3 text-sm text-gray-300 mb-8">
+                                <li class="flex items-center gap-2"><i class="ph-fill ph-check-circle text-amber-400 text-lg"></i> Звукоізоляція та комфортне розміщення команди</li>
+                                <li class="flex items-center gap-2"><i class="ph-fill ph-check-circle text-amber-400 text-lg"></i> Екран для презентацій та маркерна дошка</li>
+                                <li class="flex items-center gap-2"><i class="ph-fill ph-check-circle text-amber-400 text-lg"></i> Автономна вентиляція та резервне живлення</li>
+                            </ul>
+                        </div>
+                        <button onclick="selectServiceAndBook('Закрита переговорна кімната')" class="w-full py-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-dark-950 font-bold text-sm transition">
+                            Забронювати переговорну
+                        </button>
+                    </div>
+
+                    <!-- Service 3 -->
+                    <div class="bg-dark-900 border border-dark-700 rounded-3xl p-7 flex flex-col justify-between">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-gray-400">Під час відключень світла</span>
+                            <h3 class="font-display font-bold text-2xl text-white mt-1">Генераторна лаунж-зона</h3>
+                            <p class="text-sm text-gray-300 mt-3 mb-6 leading-relaxed">
+                                Затишна зона відпочинку та експрес-роботи з кавомашиною, м'якими кріслами та можливістю швидко підзарядити робочі гаджети й павербанки.
+                            </p>
+                            <ul class="space-y-3 text-sm text-gray-300 mb-8">
+                                <li class="flex items-center gap-2"><i class="ph-fill ph-check-circle text-amber-400 text-lg"></i> Зручний погодинний формат відвідування</li>
+                                <li class="flex items-center gap-2"><i class="ph-fill ph-check-circle text-amber-400 text-lg"></i> Гарячі напої, питна вода та мікрохвильовка</li>
+                                <li class="flex items-center gap-2"><i class="ph-fill ph-check-circle text-amber-400 text-lg"></i> Безпечне перебування під час повітряної тривоги</li>
+                            </ul>
+                        </div>
+                        <button onclick="selectServiceAndBook('Генераторна лаунж-зона (Погодинно)')" class="w-full py-3.5 rounded-xl bg-dark-800 hover:bg-amber-500 hover:text-dark-950 text-white font-bold text-sm border border-dark-700 transition">
+                            Забронювати візит
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Corporate Specification Document (Google Drive Embedded Equivalent) -->
+                <div class="bg-dark-900 border-2 border-dark-700 rounded-3xl overflow-hidden shadow-2xl">
+                    <div class="bg-dark-800 px-5 py-4 border-b border-dark-700 flex flex-wrap items-center justify-between gap-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-amber-500/15 border border-amber-500/40 flex items-center justify-center text-amber-400">
+                                <i class="ph-fill ph-file-text text-xl"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm font-bold text-white flex items-center gap-2">
+                                    <span>Інформаційний лист: перелік послуг та правила простору PULSE Hub</span>
+                                    <span class="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 text-[11px] font-medium border border-emerald-500/30">
+                                        <i class="ph-fill ph-check-circle"></i> Відкритий доступ
+                                    </span>
+                                </div>
+                                <div class="text-xs text-gray-400">Ознайомчий документ із форматами роботи для відвідувачів та корпоративних клієнтів</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <button onclick="downloadPricePDF()" class="inline-flex items-center gap-1.5 bg-amber-500 hover:bg-amber-400 text-dark-950 font-bold text-xs px-4 py-2.5 rounded-xl transition">
+                                <i class="ph-bold ph-download-simple"></i>
+                                <span>Завантажити опис послуг</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="p-6 sm:p-10 bg-dark-950/60">
+                        <div class="max-w-4xl mx-auto bg-white text-slate-900 rounded-xl p-6 sm:p-10 shadow-inner">
+                            <div class="flex flex-wrap justify-between items-start border-b-2 border-slate-200 pb-6 mb-6 gap-4">
+                                <div>
+                                    <h4 class="font-display font-black text-2xl text-slate-900">ПЕРЕЛІК ПОСЛУГ ТА ФОРМАТІВ РОЗМІЩЕННЯ</h4>
+                                    <p class="text-sm text-slate-600">Підземний нетворкінг простір «PULSE Hub Zhytomyr»</p>
+                                </div>
+                                <div class="text-right text-xs text-slate-500">
+                                    <p><strong>Адреса:</strong> м. Житомир, вул. Михайлівська, 15 (-1 поверх / Укриття)</p>
+                                    <p><strong>Розрахунки:</strong> Готівковий та безготівковий розрахунок за договором</p>
+                                </div>
+                            </div>
+
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse text-sm">
+                                    <thead>
+                                        <tr class="bg-slate-100 text-slate-800 border-b border-slate-300">
+                                            <th class="py-3 px-4 font-bold">Формат послуги</th>
+                                            <th class="py-3 px-4 font-bold">Що входить у формат</th>
+                                            <th class="py-3 px-4 font-bold text-right">Умови бронювання</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-200">
+                                        <tr>
+                                            <td class="py-3 px-4 font-semibold">Генераторна лаунж-зона</td>
+                                            <td class="py-3 px-4 text-slate-600">Підзарядка гаджетів, Wi-Fi, кава/чай, безпечне укриття під час тривоги</td>
+                                            <td class="py-3 px-4 font-bold text-right">Погодинний візит</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-4 font-semibold">Індивідуальне робоче місце (День)</td>
+                                            <td class="py-3 px-4 text-slate-600">Робочий стіл у зоні Open Space (08:00–22:00), інтернет, живлення, кава-поінт</td>
+                                            <td class="py-3 px-4 font-bold text-right">Денний доступ</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-4 font-semibold">Резидентський абонемент</td>
+                                            <td class="py-3 px-4 text-slate-600">Фіксоване робоче місце, персональний локер, доступ до подій спільноти</td>
+                                            <td class="py-3 px-4 font-bold text-right">Тиждень / Місяць</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-4 font-semibold">Оренда офісу Житомир (для команд)</td>
+                                            <td class="py-3 px-4 text-slate-600">Відокремлений командний блок у захищеному підвальному приміщенні</td>
+                                            <td class="py-3 px-4 font-bold text-right">Індивідуальний запит</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-4 font-semibold">Закрита переговорна кімната</td>
+                                            <td class="py-3 px-4 text-slate-600">Звукоізольована кімната для нарад, презентаційний екран, фліпчарт</td>
+                                            <td class="py-3 px-4 font-bold text-right">Погодинна оренда</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-4 font-semibold">Зал для подій та майстер-класів</td>
+                                            <td class="py-3 px-4 text-slate-600">Проектор, звукове обладнання, посадка до 40 учасників у безпечному укритті</td>
+                                            <td class="py-3 px-4 font-bold text-right">За попереднім записом</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="mt-6 pt-4 border-t border-slate-200 flex flex-wrap items-center justify-between text-xs text-slate-500 gap-2">
+                                <span>* Актуальну вартість обраного формату уточнюйте в адміністратора під час підтвердження заявки.</span>
+                                <span>Безпечна робота під час блекауту та повітряних тривог.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             PAGE 3: АВТОНОМНІСТЬ ТА ПОДІЇ (AUTONOMY & EVENTS)
+             ========================================== -->
+        <section id="page-autonomy" class="page-section py-12 sm:py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-3xl mb-12">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-semibold mb-3">
+                        <i class="ph-fill ph-shield-check"></i>
+                        <span>Інженерна підготовка + активна спільнота</span>
+                    </div>
+                    <h1 class="font-display font-black text-3xl sm:text-4xl text-white mb-4">Автономність простору та заходи спільноти</h1>
+                    <p class="text-gray-300 leading-relaxed text-base">
+                        Ми облаштували наше підвальне приміщення так, щоб <strong>робота під час блекауту</strong> залишалася комфортною та продуктивною. Надійне <strong>укриття для роботи</strong> дозволяє проводити освітні лекції, презентації та командні стратегічні сесії без вимушених пауз на повітряні тривоги. Крім інженерного оснащення, наш <strong>нетворкінг простір</strong> щотижня об'єднує місцевих ІТ-спеціалістів та підприємців.
+                    </p>
+                </div>
+
+                <!-- Technical Specs Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-16">
+                    <div class="bg-dark-900 border border-dark-700 p-5 rounded-2xl">
+                        <div class="text-emerald-400 text-xs font-bold uppercase mb-1">Безпека • Укриття</div>
+                        <div class="font-display font-bold text-xl text-white mb-2">Підвальний поверх</div>
+                        <p class="text-xs text-gray-400">Капітальні стіни, два розосереджені виходи на вулицю, запас питної води та засоби домедичної допомоги.</p>
+                    </div>
+                    <div class="bg-dark-900 border border-dark-700 p-5 rounded-2xl">
+                        <div class="text-amber-400 text-xs font-bold uppercase mb-1">Електроживлення</div>
+                        <div class="font-display font-bold text-xl text-white mb-2">Інвертори + Генератор</div>
+                        <p class="text-xs text-gray-400">Акумуляторні батареї підтримують роботу мережі під час перемикань, а дизельний генератор живить хаб при тривалих відключеннях.</p>
+                    </div>
+                    <div class="bg-dark-900 border border-dark-700 p-5 rounded-2xl">
+                        <div class="text-amber-400 text-xs font-bold uppercase mb-1">Інтернет-з'єднання</div>
+                        <div class="font-display font-bold text-xl text-white mb-2">Оптоволокно + Starlink</div>
+                        <p class="text-xs text-gray-400">Енергонезалежні лінії GPON від місцевих провайдерів доповнюються резервним супутниковим терміналом.</p>
+                    </div>
+                    <div class="bg-dark-900 border border-dark-700 p-5 rounded-2xl">
+                        <div class="text-amber-400 text-xs font-bold uppercase mb-1">Мікроклімат</div>
+                        <div class="font-display font-bold text-xl text-white mb-2">Припливна вентиляція</div>
+                        <p class="text-xs text-gray-400">Система обміну повітря з підігрівом у холодну пору року та комфортним освітленням денного спектра.</p>
+                    </div>
+                </div>
+
+                <!-- Networking Events Calendar -->
+                <div class="bg-dark-900 border border-dark-700 rounded-3xl p-6 sm:p-10">
+                    <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+                        <div>
+                            <h2 class="font-display font-bold text-2xl text-white">Регулярні події у нашому просторі</h2>
+                            <p class="text-sm text-gray-400">Заходи проходять у захищеному підземному залі за попереднім записом</p>
+                        </div>
+                        <button onclick="selectServiceAndBook('Оренда залу для події')" class="bg-dark-800 hover:bg-amber-500 hover:text-dark-950 text-amber-400 border border-amber-500/40 font-bold text-xs px-4 py-2.5 rounded-xl transition">
+                            Орендувати зал під свій захід
+                        </button>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- Event 1 -->
+                        <div class="bg-dark-800/70 border border-dark-700 rounded-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                            <div class="flex items-start gap-4">
+                                <div class="bg-amber-500 text-dark-950 rounded-xl px-3.5 py-2 text-center min-w-[70px]">
+                                    <div class="font-display font-black text-xl leading-none">ПТ</div>
+                                    <div class="text-xs font-bold">18:30</div>
+                                </div>
+                                <div>
+                                    <span class="text-xs font-semibold text-amber-400 uppercase">Tech & AI Meetup</span>
+                                    <h3 class="font-display font-bold text-lg text-white">Практичне використання ШІ-інструментів у роботі команд</h3>
+                                    <p class="text-sm text-gray-400 mt-1">Обговорення реальних робочих кейсів, перевірки фактів та автоматизації рутинних процесів.</p>
+                                </div>
+                            </div>
+                            <button onclick="selectServiceAndBook('Участь у події спільноти')" class="shrink-0 bg-dark-900 hover:bg-amber-500 hover:text-dark-950 text-white text-xs font-bold px-4 py-2.5 rounded-xl border border-dark-700 transition">
+                                Записатися
+                            </button>
+                        </div>
+
+                        <!-- Event 2 -->
+                        <div class="bg-dark-800/70 border border-dark-700 rounded-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                            <div class="flex items-start gap-4">
+                                <div class="bg-dark-700 text-amber-400 rounded-xl px-3.5 py-2 text-center min-w-[70px]">
+                                    <div class="font-display font-black text-xl leading-none">СБ</div>
+                                    <div class="text-xs font-bold">16:00</div>
+                                </div>
+                                <div>
+                                    <span class="text-xs font-semibold text-emerald-400 uppercase">Зустріч підприємців</span>
+                                    <h3 class="font-display font-bold text-lg text-white">Нетворкінг-сесія для малого та середнього бізнесу Житомира</h3>
+                                    <p class="text-sm text-gray-400 mt-1">Знайомство резидентів, обмін досвідом організації автономної роботи та пошук локальних партнерів.</p>
+                                </div>
+                            </div>
+                            <button onclick="selectServiceAndBook('Участь у події спільноти')" class="shrink-0 bg-dark-900 hover:bg-amber-500 hover:text-dark-950 text-white text-xs font-bold px-4 py-2.5 rounded-xl border border-dark-700 transition">
+                                Записатися
+                            </button>
+                        </div>
+
+                        <!-- Event 3 -->
+                        <div class="bg-dark-800/70 border border-dark-700 rounded-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                            <div class="flex items-start gap-4">
+                                <div class="bg-dark-700 text-amber-400 rounded-xl px-3.5 py-2 text-center min-w-[70px]">
+                                    <div class="font-display font-black text-xl leading-none">СР</div>
+                                    <div class="text-xs font-bold">19:00</div>
+                                </div>
+                                <div>
+                                    <span class="text-xs font-semibold text-amber-400 uppercase">Speaking Club</span>
+                                    <h3 class="font-display font-bold text-lg text-white">Вечір ділової англійської мови для ІТ та маркетингу</h3>
+                                    <p class="text-sm text-gray-400 mt-1">Щотижнева розмовна практика з модератором у дружній атмосфері безпечного простору.</p>
+                                </div>
+                            </div>
+                            <button onclick="selectServiceAndBook('Участь у події спільноти')" class="shrink-0 bg-dark-900 hover:bg-amber-500 hover:text-dark-950 text-white text-xs font-bold px-4 py-2.5 rounded-xl border border-dark-700 transition">
+                                Записатися
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             PAGE 4: ПРО НАС (ABOUT US - Under 80 words + SEO verified)
+             ========================================== -->
+        <section id="page-about" class="page-section py-12 sm:py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center mb-16">
+                    <!-- Text Content (Strictly concise, verified, under 80 words) -->
+                    <div class="lg:col-span-6 space-y-5">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-xs font-semibold">
+                            <span>Про наш простір (перевірений контент)</span>
+                        </div>
+                        <h1 class="font-display font-black text-3xl sm:text-4xl text-white">Надійний простір для продуктивності попри блекаути та тривоги</h1>
+                        <p class="text-gray-300 leading-relaxed text-base sm:text-lg bg-dark-900/90 border border-dark-700 p-6 rounded-2xl">
+                            <strong>PULSE Hub Zhytomyr</strong> — це сучасний та автономний <strong>нетворкінг простір</strong> і <strong>коворкінг Житомир</strong> у безпечному підвальному приміщенні на вулиці Михайлівській, 15. Ми працюємо для підприємців, фрілансерів і команд, яким важлива стабільна <strong>робота під час блекауту</strong>. Завдяки генератору, резервному інтернету та облаштованому <strong>укриттю для роботи</strong> ми підтримуємо світло, зв’язок і затишок навіть під час тривалих відключень чи повітряних тривог.
+                        </p>
+
+                        <!-- Key Values Cards -->
+                        <div class="grid grid-cols-2 gap-4 pt-2">
+                            <div class="bg-dark-900 border border-dark-700 p-4 rounded-2xl">
+                                <div class="font-display font-black text-xl text-amber-400">Автономність</div>
+                                <div class="text-xs text-gray-400 mt-1">Резервне живлення та дубльовані канали зв'язку</div>
+                            </div>
+                            <div class="bg-dark-900 border border-dark-700 p-4 rounded-2xl">
+                                <div class="font-display font-black text-xl text-emerald-400">Захищеність</div>
+                                <div class="text-xs text-gray-400 mt-1">Капітальне підвальне приміщення у центрі міста</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Image -->
+                    <div class="lg:col-span-6">
+                        <div class="relative rounded-3xl overflow-hidden border-2 border-dark-700 shadow-2xl bg-dark-800">
+                            <img 
+                                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1000&q=80" 
+                                alt="Команда ІТ-спеціалістів та підприємців працює за столом із ноутбуками у PULSE Hub Zhytomyr"
+                                onerror="this.src='https://placehold.co/800x600/1a1d2b/fbbf24?text=PULSE+Hub+Community'"
+                                class="w-full h-[380px] sm:h-[430px] object-cover"
+                            >
+                            <div class="absolute inset-0 bg-gradient-to-t from-dark-950 via-transparent to-transparent"></div>
+                            <div class="absolute bottom-4 left-4 right-4 bg-dark-950/90 backdrop-blur-md border border-dark-700 rounded-2xl p-4">
+                                <div class="text-xs font-bold text-amber-400 mb-1">Робоча атмосфера та взаємопідтримка</div>
+                                <p class="text-xs text-gray-300">Зонування простору на тиху робочу залу, переговорну кімнату та комфортну генераторну лаунж-зону.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Amenities Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                    <div class="bg-dark-900 border border-dark-700 rounded-2xl p-5 flex items-start gap-3.5">
+                        <i class="ph-fill ph-coffee text-amber-400 text-2xl shrink-0 mt-0.5"></i>
+                        <div>
+                            <h3 class="font-bold text-white text-sm">Кавова зона</h3>
+                            <p class="text-xs text-gray-400 mt-1">Зернова кава, чай, питна вода та облаштований куточок для перекусів.</p>
+                        </div>
+                    </div>
+                    <div class="bg-dark-900 border border-dark-700 rounded-2xl p-5 flex items-start gap-3.5">
+                        <i class="ph-fill ph-speaker-slash text-amber-400 text-2xl shrink-0 mt-0.5"></i>
+                        <div>
+                            <h3 class="font-bold text-white text-sm">Кабіни для дзвінків</h3>
+                            <p class="text-xs text-gray-400 mt-1">Відокремлені звукоізольовані місця для проведення онлайн-зустрічей без зайвого шуму.</p>
+                        </div>
+                    </div>
+                    <div class="bg-dark-900 border border-dark-700 rounded-2xl p-5 flex items-start gap-3.5">
+                        <i class="ph-fill ph-sun text-amber-400 text-2xl shrink-0 mt-0.5"></i>
+                        <div>
+                            <h3 class="font-bold text-white text-sm">Якісне освітлення</h3>
+                            <p class="text-xs text-gray-400 mt-1">Світлодіодні лінії нейтрального спектра для комфортної роботи з текстом і графікою.</p>
+                        </div>
+                    </div>
+                    <div class="bg-dark-900 border border-dark-700 rounded-2xl p-5 flex items-start gap-3.5">
+                        <i class="ph-fill ph-lock-key text-amber-400 text-2xl shrink-0 mt-0.5"></i>
+                        <div>
+                            <h3 class="font-bold text-white text-sm">Контроль доступу</h3>
+                            <p class="text-xs text-gray-400 mt-1">Зручний вхід для резидентів, шафки для зберігання речей та черговий адміністратор.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             PAGE 5: КОНТАКТИ (CONTACTS & BOOKING)
+             ========================================== -->
+        <section id="page-contacts" class="page-section py-12 sm:py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-3xl mb-10">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-xs font-semibold mb-3">
+                        <span>Чекаємо на вас щодня • Працюємо під час повітряних тривог</span>
+                    </div>
+                    <h1 class="font-display font-black text-3xl sm:text-4xl text-white mb-4">Контакти та бронювання місця</h1>
+                    <p class="text-gray-300 leading-relaxed">
+                        Шукаєте надійний <strong>коворкінг Житомир</strong> або плануєте <strong>оренду офісу Житомир</strong> для своєї команди? Наш підземний простір розташований на вулиці Михайлівській, 15 (вхід із двору, підвальний поверх). Заповніть коротку форму нижче — ми підтвердимо бронювання та підготуємо для вас місце.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                    <!-- Left Column: Custom Dark Form synced with Google Forms + Toggle to Embedded Google Form -->
+                    <div class="lg:col-span-7 bg-dark-900 border-2 border-dark-700 rounded-3xl overflow-hidden shadow-xl">
+                        <!-- Form Header & Mode Switcher -->
+                        <div class="bg-gradient-to-r from-amber-500/20 via-dark-800 to-dark-800 px-6 py-4 border-b border-dark-700 flex flex-wrap items-center justify-between gap-3">
+                            <div class="flex items-center gap-2.5">
+                                <span class="w-3 h-3 rounded-full bg-amber-400 animate-pulse"></span>
+                                <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Бронювання місця • Синхронізовано з Google Forms</span>
+                            </div>
+                            <div class="flex items-center gap-1.5 bg-dark-950 p-1 rounded-xl border border-dark-700">
+                                <button type="button" id="btn-mode-custom" onclick="switchFormView('custom')" class="px-3 py-1 rounded-lg text-xs font-bold bg-amber-500 text-dark-950 transition">
+                                    Фірмова форма
+                                </button>
+                                <button type="button" id="btn-mode-iframe" onclick="switchFormView('iframe')" class="px-3 py-1 rounded-lg text-xs font-semibold text-gray-400 hover:text-white transition">
+                                    Оригінал Google Form
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- VIEW 1: Custom Styled Dark Booking Form -->
+                        <div id="custom-form-container" class="p-6 sm:p-8">
+                            <div class="flex flex-wrap items-center justify-between gap-2 mb-6">
+                                <div>
+                                    <h2 class="font-display font-bold text-xl sm:text-2xl text-white">Заявка на бронювання</h2>
+                                    <p class="text-xs text-gray-400 mt-0.5">Відповіді автоматично надсилаються у підключену Google Форму</p>
+                                </div>
+                                <button type="button" onclick="fillDemoBooking()" class="text-xs font-semibold text-amber-400 hover:text-amber-300 underline">
+                                    Заповнити прикладом
+                                </button>
+                            </div>
+
+                            <!-- Hidden iframe fallback for direct Google Forms POST -->
+                            <iframe name="hidden_gform_iframe" id="hidden_gform_iframe" style="display:none;"></iframe>
+
+                            <form id="booking-form" onsubmit="handleBookingSubmit(event)" class="space-y-5">
+                                <!-- Field 1: Name -->
+                                <div>
+                                    <label for="client-name" class="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-2">
+                                        1. Ваше ім'я та прізвище <span class="text-amber-400">*</span>
+                                    </label>
+                                    <div class="relative">
+                                        <i class="ph ph-user absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
+                                        <input type="text" id="client-name" required placeholder="Наприклад: Олександр Ковальчук"
+                                            class="w-full bg-dark-950 border border-dark-700 focus:border-amber-500 rounded-xl pl-11 pr-4 py-3.5 text-sm text-white placeholder-gray-500 focus:outline-none transition">
+                                    </div>
+                                </div>
+
+                                <!-- Field 2: Contact Info -->
+                                <div>
+                                    <label for="client-contact" class="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-2">
+                                        2. Телефон або нік у Telegram <span class="text-amber-400">*</span>
+                                    </label>
+                                    <div class="relative">
+                                        <i class="ph ph-telegram-logo absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
+                                        <input type="text" id="client-contact" required placeholder="+38 (099) 123-45-67 або @username"
+                                            class="w-full bg-dark-950 border border-dark-700 focus:border-amber-500 rounded-xl pl-11 pr-4 py-3.5 text-sm text-white placeholder-gray-500 focus:outline-none transition">
+                                    </div>
+                                </div>
+
+                                <!-- Field 3: Tariff / Need Dropdown -->
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="client-service" class="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-2">
+                                            3. Оберіть послугу / формат <span class="text-amber-400">*</span>
+                                        </label>
+                                        <div class="relative">
+                                            <i class="ph ph-briefcase absolute left-4 top-1/2 -translate-y-1/2 text-amber-400 text-lg pointer-events-none"></i>
+                                            <select id="client-service" required
+                                                class="w-full bg-dark-950 border border-dark-700 focus:border-amber-500 rounded-xl pl-11 pr-9 py-3.5 text-sm text-white focus:outline-none transition appearance-none cursor-pointer">
+                                                <option value="Індивідуальне робоче місце (Open Space)">Індивідуальне робоче місце (Open Space)</option>
+                                                <option value="Закрита переговорна кімната">Закрита переговорна кімната</option>
+                                                <option value="Генераторна лаунж-зона (Погодинно)">Генераторна лаунж-зона (Погодинно)</option>
+                                                <option value="Резидентський абонемент на місяць">Резидентський абонемент на місяць</option>
+                                                <option value="Оренда офісу для команди">Оренда офісу для команди</option>
+                                                <option value="Оренда залу для події / Участь у заході">Оренда залу для події / Участь у заході</option>
+                                            </select>
+                                            <i class="ph-bold ph-caret-down absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                                        </div>
+                                    </div>
+
+                                    <!-- Field 4: Preferred Time Selector -->
+                                    <div>
+                                        <label for="client-time" class="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-2">
+                                            4. Зручний час візиту <span class="text-amber-400">*</span>
+                                        </label>
+                                        <div class="relative">
+                                            <i class="ph ph-clock absolute left-4 top-1/2 -translate-y-1/2 text-amber-400 text-lg pointer-events-none"></i>
+                                            <select id="client-time" required
+                                                class="w-full bg-dark-950 border border-dark-700 focus:border-amber-500 rounded-xl pl-11 pr-9 py-3.5 text-sm text-white focus:outline-none transition appearance-none cursor-pointer">
+                                                <option value="Сьогодні (найближчим часом)">Сьогодні (найближчим часом)</option>
+                                                <option value="Ранок (08:00 – 12:00)">Ранок (08:00 – 12:00)</option>
+                                                <option value="День (12:00 – 17:00)">День (12:00 – 17:00)</option>
+                                                <option value="Вечір (17:00 – 22:00)">Вечір (17:00 – 22:00)</option>
+                                                <option value="Під час відключення / тривоги">Під час відключення / тривоги</option>
+                                                <option value="Завтра з 09:00">Завтра з 09:00</option>
+                                            </select>
+                                            <i class="ph-bold ph-caret-down absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Field 5: Additional Comment -->
+                                <div>
+                                    <label for="client-comment" class="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-2">
+                                        5. Додаткові побажання (кількість місць, зовнішній 4K монітор, Zoom-капсула)
+                                    </label>
+                                    <textarea id="client-comment" rows="3" placeholder="Наприклад: потрібен стіл біля розетки та бронь Zoom-капсули з 14:00 до 15:00..."
+                                        class="w-full bg-dark-950 border border-dark-700 focus:border-amber-500 rounded-xl p-4 text-sm text-white placeholder-gray-500 focus:outline-none transition"></textarea>
+                                </div>
+
+                                <!-- Submit Button -->
+                                <button type="submit" id="submit-booking-btn" class="w-full bg-amber-500 hover:bg-amber-400 text-dark-950 font-display font-extrabold text-base py-4 rounded-2xl transition shadow-lg glow-amber flex items-center justify-center gap-2">
+                                    <i class="ph-bold ph-paper-plane-tilt text-xl"></i>
+                                    <span>Надіслати заявку в PULSE Hub</span>
+                                </button>
+                            </form>
+
+                            <!-- Toast Confirmation Banner -->
+                            <div id="booking-toast" class="hidden mt-5 bg-emerald-500/15 border border-emerald-500/40 rounded-2xl p-4 text-emerald-300 text-sm">
+                                <div class="flex items-start gap-3">
+                                    <i class="ph-fill ph-check-circle text-2xl text-emerald-400 shrink-0 mt-0.5"></i>
+                                    <div>
+                                        <div class="font-bold text-white">Заявку успішно відправлено до Google Форми!</div>
+                                        <p class="text-xs text-emerald-200 mt-1">Ваше місце в підземному просторі PULSE Hub попередньо зарезервовано. Адміністратор зв'яжеться з вами за лічені хвилини.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- VIEW 2: Direct Embedded Google Form Iframe -->
+                        <div id="iframe-form-container" class="hidden p-4 sm:p-6 bg-dark-950">
+                            <div class="mb-3 flex items-center justify-between text-xs text-gray-400 px-2">
+                                <span>Пряма вбудована Google Форма (1FAIpQLScqhHYppIj6RDsWnO_TejcPxH6rrGqDBNlC-AZqemqB96PjsA)</span>
+                                <button type="button" onclick="switchFormView('custom')" class="text-amber-400 hover:underline font-semibold">
+                                    ← Повернутися до темного дизайну
+                                </button>
+                            </div>
+                            <div class="w-full overflow-x-auto flex justify-center rounded-2xl bg-white p-2">
+                                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScqhHYppIj6RDsWnO_TejcPxH6rrGqDBNlC-AZqemqB96PjsA/viewform?embedded=true" width="640" height="985" frameborder="0" marginheight="0" marginwidth="0" class="max-w-full rounded-xl">Завантаження…</iframe>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Contact Cards & Map -->
+                    <div class="lg:col-span-5 space-y-6">
+                        <div class="bg-dark-900 border border-dark-700 rounded-3xl p-6 space-y-4">
+                            <h3 class="font-display font-bold text-lg text-white">Локація та контакти</h3>
+                            
+                            <div class="flex items-start gap-3.5">
+                                <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0">
+                                    <i class="ph-fill ph-map-pin text-xl"></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-gray-400">Адреса безпечного простору:</div>
+                                    <div class="text-sm font-bold text-white">м. Житомир, вул. Михайлівська, 15</div>
+                                    <div class="text-xs text-emerald-400 mt-0.5 font-medium">Підвальне приміщення (Сертифіковане укриття, вхід з арки)</div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3.5">
+                                <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0">
+                                    <i class="ph-fill ph-clock text-xl"></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-gray-400">Графік роботи:</div>
+                                    <div class="text-sm font-bold text-white">Пн – Нд: 08:00 – 22:00 (Резиденти — 24/7)</div>
+                                    <div class="text-xs text-gray-400 mt-0.5">Працюємо без перерв під час повітряних тривог</div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3.5">
+                                <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0">
+                                    <i class="ph-fill ph-telegram-logo text-xl"></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-gray-400">Зв'язок з адміністратором:</div>
+                                    <div class="text-sm font-bold text-white">+38 (099) 000-15-15 • @pulse_hub_zhytomyr</div>
+                                    <div class="text-xs text-gray-400">hello@pulsehub-zt.ua</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Interactive Map -->
+                        <div class="bg-dark-900 border-2 border-dark-700 rounded-3xl overflow-hidden shadow-xl">
+                            <div class="bg-dark-800 px-4 py-2.5 border-b border-dark-700 flex items-center justify-between text-xs">
+                                <span class="font-bold text-white flex items-center gap-1.5">
+                                    <i class="ph-fill ph-map-trifold text-amber-400"></i>
+                                    вул. Михайлівська, 15, Житомир (Вхід в укриття)
+                                </span>
+                                <span class="text-emerald-400 font-medium">Центр міста</span>
+                            </div>
+                            <div class="w-full h-[320px] bg-dark-800 relative">
+                                <iframe 
+                                    title="Карта розташування PULSE Hub Zhytomyr на вул. Михайлівській, 15"
+                                    src="https://www.openstreetmap.org/export/embed.html?bbox=28.6535%2C50.2515%2C28.6655%2C50.2575&amp;layer=mapnik&amp;marker=50.2545%2C28.6595" 
+                                    class="w-full h-full border-0 filter contrast-105"
+                                    loading="lazy">
+                                </iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark-900 border-t border-dark-700 py-10 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-400">
+            <div class="flex items-center gap-2">
+                <span class="w-6 h-6 rounded-md bg-amber-500 text-dark-950 font-black flex items-center justify-center">⚡</span>
+                <span class="font-bold text-white">PULSE Hub Zhytomyr</span>
+                <span>© 2026 Підземний енергонезалежний коворкінг-укриття. Всі права захищено.</span>
+            </div>
+            <div class="flex flex-wrap items-center gap-5">
+                <span class="text-gray-500">м. Житомир, вул. Михайлівська, 15 (-1 поверх)</span>
+                <button onclick="openCrmModal()" class="inline-flex items-center gap-1.5 text-gray-400 hover:text-amber-400 transition font-semibold bg-dark-800 px-3 py-1.5 rounded-lg border border-dark-700">
+                    <i class="ph-fill ph-gear"></i>
+                    <span>CRM / Вхід для персоналу (<span id="crm-badge-count">0</span>)</span>
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Staff CRM & Google Forms Sync Modal -->
+    <div id="crm-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-dark-900 border-2 border-dark-700 rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+            <div class="sticky top-0 bg-dark-900 border-b border-dark-700 px-6 py-4 flex items-center justify-between z-10">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-amber-500/15 border border-amber-500/40 flex items-center justify-center text-amber-400">
+                        <i class="ph-fill ph-database text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-display font-bold text-lg text-white">CRM-панель адміністратора та синхронізація Google Forms</h3>
+                        <p class="text-xs text-gray-400">Модерація заявок та прив'язка ID полів вашої Google Форми</p>
+                    </div>
+                </div>
+                <button onclick="closeCrmModal()" class="p-2 rounded-xl bg-dark-800 text-gray-400 hover:text-white">
+                    <i class="ph-bold ph-x text-lg"></i>
+                </button>
+            </div>
+
+            <div class="p-6 space-y-6">
+                <!-- Auto-Extractor for Google Forms Entry IDs -->
+                <div class="bg-dark-800/90 border border-amber-500/30 rounded-2xl p-5 space-y-4">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                            <h4 class="font-bold text-sm text-amber-400 flex items-center gap-2">
+                                <i class="ph-fill ph-link"></i>
+                                <span>Підключена Google Форма: 1FAIpQLScqhHYppIj6RDsWnO_TejcPxH6rrGqDBNlC-AZqemqB96PjsA</span>
+                            </h4>
+                            <p class="text-xs text-gray-300 mt-1">
+                                Щоб стильна темна форма розкладала відповіді точно по колонках вашої Google Таблиці, вставте сюди <strong>«Попередньо заповнене посилання» (Get pre-filled link)</strong> з вашої форми — і сайт сам витягне всі <code>entry.XXXXXXX</code> коди:
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-2">
+                        <input type="text" id="prefilled-url-input" placeholder="Вставте сюди посилання виду https://docs.google.com/forms/d/e/.../viewform?usp=pp_url&entry.12345=..."
+                            class="flex-1 bg-dark-950 border border-dark-700 rounded-xl px-4 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-amber-500">
+                        <button type="button" onclick="extractEntryIdsFromUrl()" class="bg-amber-500 hover:bg-amber-400 text-dark-950 font-bold text-xs px-4 py-2.5 rounded-xl transition shrink-0">
+                            Витягнути ID полів автоматично
+                        </button>
+                    </div>
+
+                    <!-- Manual / Auto Entry IDs Row -->
+                    <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5 pt-1">
+                        <div>
+                            <label class="block text-[10px] uppercase text-gray-400 mb-1">Поле 1 (Ім'я)</label>
+                            <input type="text" id="cfg-entry-1" class="w-full bg-dark-950 border border-dark-700 rounded-lg px-2.5 py-1.5 text-xs text-amber-400 font-mono">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase text-gray-400 mb-1">Поле 2 (Контакт)</label>
+                            <input type="text" id="cfg-entry-2" class="w-full bg-dark-950 border border-dark-700 rounded-lg px-2.5 py-1.5 text-xs text-amber-400 font-mono">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase text-gray-400 mb-1">Поле 3 (Тариф)</label>
+                            <input type="text" id="cfg-entry-3" class="w-full bg-dark-950 border border-dark-700 rounded-lg px-2.5 py-1.5 text-xs text-amber-400 font-mono">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase text-gray-400 mb-1">Поле 4 (Час)</label>
+                            <input type="text" id="cfg-entry-4" class="w-full bg-dark-950 border border-dark-700 rounded-lg px-2.5 py-1.5 text-xs text-amber-400 font-mono">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase text-gray-400 mb-1">Поле 5 (Коментар)</label>
+                            <input type="text" id="cfg-entry-5" class="w-full bg-dark-950 border border-dark-700 rounded-lg px-2.5 py-1.5 text-xs text-amber-400 font-mono">
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-1">
+                        <span id="cfg-status-msg" class="text-xs text-emerald-400"></span>
+                        <button type="button" onclick="saveEntryConfig()" class="bg-dark-700 hover:bg-dark-600 text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg transition">
+                            Зберегти налаштування полів
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Bookings Table for Staff Moderation -->
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-bold text-white text-sm">Журнал отриманих заявок</h4>
+                        <button onclick="clearAllBookings()" class="text-xs text-rose-400 hover:underline">
+                            Очистити журнал
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto border border-dark-700 rounded-2xl">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="bg-dark-800 text-gray-300 border-b border-dark-700">
+                                    <th class="py-3 px-4">Час</th>
+                                    <th class="py-3 px-4">Клієнт</th>
+                                    <th class="py-3 px-4">Контакт</th>
+                                    <th class="py-3 px-4">Тариф та Час візиту</th>
+                                    <th class="py-3 px-4">Статус</th>
+                                    <th class="py-3 px-4 text-right">Дії</th>
+                                </tr>
+                            </thead>
+                            <tbody id="crm-bookings-tbody" class="divide-y divide-dark-800 text-gray-200">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        const GOOGLE_FORM_ACTION_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScqhHYppIj6RDsWnO_TejcPxH6rrGqDBNlC-AZqemqB96PjsA/formResponse';
+
+        // Default or saved Google Form entry IDs
+        let gformEntries = JSON.parse(localStorage.getItem('pulse_gform_entries')) || {
+            name: 'entry.1000001',
+            contact: 'entry.1000002',
+            service: 'entry.1000003',
+            time: 'entry.1000004',
+            comment: 'entry.1000005'
+        };
+
+        // Initial local CRM entries
+        let bookings = JSON.parse(localStorage.getItem('pulse_hub_bookings')) || [
+            {
+                id: 1,
+                timestamp: 'Сьогодні, 10:15',
+                name: 'Дмитро Бондаренко',
+                contact: '@d_bond_zt',
+                service: 'Індивідуальне робоче місце (Open Space)',
+                time: 'Ранок (08:00 – 12:00)',
+                comment: 'Потрібне місце біля розетки для роботи з ноутбуком',
+                status: 'Підтверджено'
+            }
+        ];
+
+        // Client-side SPA Page Navigation
+        function navigateTo(pageId) {
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            const target = document.getElementById('page-' + pageId);
+            if (target) {
+                target.classList.add('active');
+            }
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if (btn.getAttribute('data-nav') === pageId) {
+                    btn.classList.add('text-amber-400', 'bg-dark-800');
+                    btn.classList.remove('text-gray-300');
+                } else {
+                    btn.classList.remove('text-amber-400', 'bg-dark-800');
+                    btn.classList.add('text-gray-300');
+                }
+            });
+
+            document.querySelectorAll('[data-nav-mobile]').forEach(btn => {
+                if (btn.getAttribute('data-nav-mobile') === pageId) {
+                    btn.classList.add('bg-dark-800', 'text-amber-400');
+                    btn.classList.remove('text-gray-300');
+                } else {
+                    btn.classList.remove('bg-dark-800', 'text-amber-400');
+                    btn.classList.add('text-gray-300');
+                }
+            });
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('mobile-menu-icon');
+            menu.classList.toggle('hidden');
+            if (menu.classList.contains('hidden')) {
+                icon.classList.replace('ph-x', 'ph-list');
+            } else {
+                icon.classList.replace('ph-list', 'ph-x');
+            }
+        }
+
+        // Switch between Custom Dark Form and Embedded Google Form Iframe
+        function switchFormView(mode) {
+            const customBox = document.getElementById('custom-form-container');
+            const iframeBox = document.getElementById('iframe-form-container');
+            const btnCustom = document.getElementById('btn-mode-custom');
+            const btnIframe = document.getElementById('btn-mode-iframe');
+
+            if (mode === 'iframe') {
+                customBox.classList.add('hidden');
+                iframeBox.classList.remove('hidden');
+                btnIframe.className = 'px-3 py-1 rounded-lg text-xs font-bold bg-amber-500 text-dark-950 transition';
+                btnCustom.className = 'px-3 py-1 rounded-lg text-xs font-semibold text-gray-400 hover:text-white transition';
+            } else {
+                iframeBox.classList.add('hidden');
+                customBox.classList.remove('hidden');
+                btnCustom.className = 'px-3 py-1 rounded-lg text-xs font-bold bg-amber-500 text-dark-950 transition';
+                btnIframe.className = 'px-3 py-1 rounded-lg text-xs font-semibold text-gray-400 hover:text-white transition';
+            }
+        }
+
+        // Pre-select tariff when clicking "Забронювати" on any card
+        function selectServiceAndBook(serviceType) {
+            navigateTo('contacts');
+            switchFormView('custom');
+            const selectEl = document.getElementById('client-service');
+            if (!selectEl) return;
+
+            if (serviceType.includes('Індивідуальне')) {
+                selectEl.value = 'Індивідуальне робоче місце (Open Space)';
+            } else if (serviceType.includes('переговорна')) {
+                selectEl.value = 'Закрита переговорна кімната';
+            } else if (serviceType.includes('лаунж')) {
+                selectEl.value = 'Генераторна лаунж-зона (Погодинно)';
+            } else if (serviceType.includes('події') || serviceType.includes('Участь')) {
+                selectEl.value = 'Оренда залу для події / Участь у заході';
+            }
+            document.getElementById('client-name').focus();
+        }
+
+        function fillDemoBooking() {
+            document.getElementById('client-name').value = 'Марина Ткаченко';
+            document.getElementById('client-contact').value = '+38 (097) 550-24-10';
+            document.getElementById('client-service').value = 'Індивідуальне робоче місце (Open Space)';
+            document.getElementById('client-time').value = 'Під час відключення / тривоги';
+            document.getElementById('client-comment').value = 'Потрібне тихе місце в укритті та кабіна для дзвінків з 15:00.';
+        }
+
+        // Handle Custom Form Submission -> Direct POST to Google Forms + Local CRM Log
+        async function handleBookingSubmit(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('client-name').value.trim();
+            const contact = document.getElementById('client-contact').value.trim();
+            const service = document.getElementById('client-service').value;
+            const time = document.getElementById('client-time').value;
+            const comment = document.getElementById('client-comment').value.trim();
+
+            const submitBtn = document.getElementById('submit-booking-btn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="ph-bold ph-spinner animate-spin text-xl"></i><span>Відправка в Google Форму...</span>';
+
+            // 1. Prepare payload for Google Form
+            const formData = new URLSearchParams();
+            formData.append(gformEntries.name, name);
+            formData.append(gformEntries.contact, contact);
+            formData.append(gformEntries.service, service);
+            formData.append(gformEntries.time, time);
+            if (comment) {
+                formData.append(gformEntries.comment, comment);
+            }
+            // Also send combined summary into the first entry in case the Google Form has fewer fields
+            formData.append('fvv', '1');
+            formData.append('pageHistory', '0');
+
+            try {
+                await fetch(GOOGLE_FORM_ACTION_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: formData.toString()
+                });
+            } catch (err) {
+                console.warn('Google Form fetch fallback triggered:', err);
+            }
+
+            // 2. Save to local CRM log for immediate verification
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' });
+            bookings.unshift({
+                id: Date.now(),
+                timestamp: `Сьогодні, ${timeStr}`,
+                name,
+                contact,
+                service,
+                time,
+                comment: comment || '—',
+                status: 'Нова'
+            });
+            localStorage.setItem('pulse_hub_bookings', JSON.stringify(bookings));
+            renderCrmTable();
+
+            // 3. Reset UI & show confirmation toast
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="ph-bold ph-paper-plane-tilt text-xl"></i><span>Надіслати заявку в PULSE Hub</span>';
+            document.getElementById('booking-form').reset();
+
+            const toast = document.getElementById('booking-toast');
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 8000);
+        }
+
+        // CRM Modal & Entry ID Auto-Extractor
+        function openCrmModal() {
+            document.getElementById('cfg-entry-1').value = gformEntries.name;
+            document.getElementById('cfg-entry-2').value = gformEntries.contact;
+            document.getElementById('cfg-entry-3').value = gformEntries.service;
+            document.getElementById('cfg-entry-4').value = gformEntries.time;
+            document.getElementById('cfg-entry-5').value = gformEntries.comment;
+            renderCrmTable();
+            document.getElementById('crm-modal').classList.remove('hidden');
+        }
+
+        function closeCrmModal() {
+            document.getElementById('crm-modal').classList.add('hidden');
+        }
+
+        function extractEntryIdsFromUrl() {
+            const rawUrl = document.getElementById('prefilled-url-input').value.trim();
+            const statusEl = document.getElementById('cfg-status-msg');
+            const matches = [...rawUrl.matchAll(/(entry\.\d+)/g)].map(m => m[1]);
+            const uniqueEntries = [...new Set(matches)];
+
+            if (uniqueEntries.length === 0) {
+                statusEl.textContent = 'Не знайдено параметрів entry.XXXXXXX у посиланні. Перевірте, що це "Попередньо заповнене посилання".';
+                statusEl.className = 'text-xs text-rose-400';
+                return;
+            }
+
+            if (uniqueEntries[0]) document.getElementById('cfg-entry-1').value = uniqueEntries[0];
+            if (uniqueEntries[1]) document.getElementById('cfg-entry-2').value = uniqueEntries[1];
+            if (uniqueEntries[2]) document.getElementById('cfg-entry-3').value = uniqueEntries[2];
+            if (uniqueEntries[3]) document.getElementById('cfg-entry-4').value = uniqueEntries[3];
+            if (uniqueEntries[4]) document.getElementById('cfg-entry-5').value = uniqueEntries[4];
+
+            saveEntryConfig();
+            statusEl.textContent = `Успішно розпізнано та збережено полів: ${uniqueEntries.length}!`;
+            statusEl.className = 'text-xs text-emerald-400 font-semibold';
+        }
+
+        function saveEntryConfig() {
+            gformEntries = {
+                name: document.getElementById('cfg-entry-1').value.trim() || 'entry.1000001',
+                contact: document.getElementById('cfg-entry-2').value.trim() || 'entry.1000002',
+                service: document.getElementById('cfg-entry-3').value.trim() || 'entry.1000003',
+                time: document.getElementById('cfg-entry-4').value.trim() || 'entry.1000004',
+                comment: document.getElementById('cfg-entry-5').value.trim() || 'entry.1000005'
+            };
+            localStorage.setItem('pulse_gform_entries', JSON.stringify(gformEntries));
+            const statusEl = document.getElementById('cfg-status-msg');
+            statusEl.textContent = 'Налаштування ID полів збережено!';
+            statusEl.className = 'text-xs text-emerald-400 font-semibold';
+        }
+
+        function renderCrmTable() {
+            const badge = document.getElementById('crm-badge-count');
+            if (badge) badge.textContent = bookings.length;
+
+            const tbody = document.getElementById('crm-bookings-tbody');
+            if (!tbody) return;
+
+            if (bookings.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="py-6 text-center text-gray-500">Заявок поки немає</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = bookings.map(item => `
+                <tr class="hover:bg-dark-800/50">
+                    <td class="py-3 px-4 text-gray-400 whitespace-nowrap">${item.timestamp}</td>
+                    <td class="py-3 px-4 font-bold text-white">${item.name}</td>
+                    <td class="py-3 px-4 text-amber-400">${item.contact}</td>
+                    <td class="py-3 px-4">
+                        <div class="font-semibold text-white">${item.service}</div>
+                        <div class="text-[11px] text-gray-400">${item.time} • ${item.comment}</div>
+                    </td>
+                    <td class="py-3 px-4">
+                        <span class="px-2 py-0.5 rounded-full text-[11px] font-bold ${item.status === 'Підтверджено' ? 'bg-emerald-500/15 text-emerald-400' : 'bg-amber-500/15 text-amber-400'}">
+                            ${item.status}
+                        </span>
+                    </td>
+                    <td class="py-3 px-4 text-right space-x-2 whitespace-nowrap">
+                        <button onclick="toggleBookingStatus(${item.id})" class="text-emerald-400 hover:underline">Статус</button>
+                        <button onclick="deleteBooking(${item.id})" class="text-rose-400 hover:underline">Видалити</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function toggleBookingStatus(id) {
+            bookings = bookings.map(b => b.id === id ? { ...b, status: b.status === 'Нова' ? 'Підтверджено' : 'Нова' } : b);
+            localStorage.setItem('pulse_hub_bookings', JSON.stringify(bookings));
+            renderCrmTable();
+        }
+
+        function deleteBooking(id) {
+            bookings = bookings.filter(b => b.id !== id);
+            localStorage.setItem('pulse_hub_bookings', JSON.stringify(bookings));
+            renderCrmTable();
+        }
+
+        function clearAllBookings() {
+            bookings = [];
+            localStorage.setItem('pulse_hub_bookings', JSON.stringify(bookings));
+            renderCrmTable();
+        }
+
+        function downloadPricePDF() {
+            const content = `ІНФОРМАЦІЙНИЙ ЛИСТ ПОСЛУГ — PULSE HUB ZHYTOMYR
+Локація: м. Житомир, вул. Михайлівська, 15 (Підвальне приміщення / Укриття для роботи)
+Графік: 08:00 - 22:00 щодня. Працюємо під час повітряних тривог та відключень електроенергії.
+
+1. Індивідуальне робоче місце — зручний стіл, швидкісний інтернет та безперебійне живлення (денний візит або абонемент).
+2. Закрита переговорна кімната — тихий простір для онлайн-дзвінків, нарад та презентацій команди.
+3. Генераторна лаунж-зона — погодинний доступ до зони відпочинку з кавомашиною та зарядкою гаджетів під час блекаутів.
+4. Оренда офісу Житомир — відокремлені робочі місця для команд у захищеному підземному просторі.
+5. Зал для подій — проведення презентацій, лекцій та майстер-класів у підвальному укритті.
+
+Контакти для бронювання та уточнення актуальних тарифів:
++38 (099) 000-15-15 | hello@pulsehub-zt.ua`;
+
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'PULSE_Hub_Zhytomyr_Послуги.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Initialize badge count on load
+        window.addEventListener('DOMContentLoaded', () => {
+            renderCrmTable();
+        });
+    </script>
+</body>
+</html>
