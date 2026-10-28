@@ -1126,47 +1126,25 @@
         // Handle Custom Form Submission -> Direct POST to Google Forms + Local CRM Log
         async function handleBookingSubmit(event) {
             event.preventDefault();
+
+            const name = document.getElementById('client-name').value.trim();
+            const contact = document.getElementById('client-contact').value.trim();
+            const service = document.getElementById('client-service').value;
+            const time = document.getElementById('client-time').value;
+            const comment = document.getElementById('client-comment').value.trim();
+
             const submitBtn = document.getElementById('submit-booking-btn');
             submitBtn.disabled = true;
-            submitBtn.textContent = 'Відправка в Google Форму...';
+            submitBtn.innerHTML = '<i class="ph-bold ph-spinner animate-spin text-xl"></i><span>Відправка в Google Форму...</span>';
 
-            // Автоматично збираємо UTM-мітки з поточного адресного рядка сторінки
-            const urlParams = new URLSearchParams(window.location.search);
-            const utmSource = urlParams.get('utm_source') || 'direct';
-            const utmMedium = urlParams.get('utm_medium') || 'none';
-            const utmCampaign = urlParams.get('utm_campaign') || 'none';
-
-            // Формуємо текст коментаря з додаванням UTM-міток, щоб бачити їх у таблиці
-            const userComment = document.getElementById('client-comment').value.trim();
-            const fullComment = `${userComment} [Джерело: source=${utmSource}, medium=${utmMedium}, campaign=${utmCampaign}]`;
-
+            // 1. Prepare payload for Google Form
             const formData = new URLSearchParams();
-            formData.append(gformEntries.name, document.getElementById('client-name').value.trim());
-            formData.append(gformEntries.contact, document.getElementById('client-contact').value.trim());
-            formData.append(gformEntries.service, document.getElementById('client-service').value);
-            formData.append(gformEntries.time, document.getElementById('client-time').value);
-            formData.append(gformEntries.comment, fullComment); // Надсилаємо коментар разом із мітками у Google Форму
-            formData.append('fvv', '1');
-            formData.append('pageHistory', '0');
-
-            try {
-                await fetch(GOOGLE_FORM_ACTION_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: formData.toString()
-                });
-            } catch (err) {
-                console.warn(err);
-            }
-
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Надіслати заявку в PULSE Hub';
-            document.getElementById('booking-form').reset();
-            const toast = document.getElementById('booking-toast');
-            toast.classList.remove('hidden');
-            setTimeout(() => toast.classList.add('hidden'), 6000);
-        }
+            formData.append(gformEntries.name, name);
+            formData.append(gformEntries.contact, contact);
+            formData.append(gformEntries.service, service);
+            formData.append(gformEntries.time, time);
+            if (comment) {
+                formData.append(gformEntries.comment, comment);
             }
             // Also send combined summary into the first entry in case the Google Form has fewer fields
             formData.append('fvv', '1');
